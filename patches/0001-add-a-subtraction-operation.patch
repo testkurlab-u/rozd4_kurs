@@ -1,0 +1,42 @@
+From 976f6913dbfcb17911adb76a248e0f798b41638c Mon Sep 17 00:00:00 2001
+From: Sergii Piatakov <sergii.piatakov@globallogic.com>
+Date: Thu, 15 Nov 2018 15:17:29 +0200
+Subject: [PATCH 1/2] add a subtraction operation
+
+Add member-function which performs a subtraction in terms of
+an addition.
+
+Signed-off-by: Sergii Piatakov <sergii.piatakov@globallogic.com>
+---
+ calculator.cpp | 5 +++++
+ calculator.h   | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/calculator.cpp b/calculator.cpp
+index 23b2bb3..3c63184 100644
+--- a/calculator.cpp
++++ b/calculator.cpp
+@@ -4,3 +4,8 @@ int Calculator::Add (int a, int b)
+ {
+     return a + b;
+ }
++
++int Calculator::Sub (int a, int b)
++{
++    return Add (a, -b);
++}
+diff --git a/calculator.h b/calculator.h
+index 5813ec9..84ff414 100644
+--- a/calculator.h
++++ b/calculator.h
+@@ -5,6 +5,7 @@ class Calculator
+ {
+     public:
+         int Add (int, int);
++        int Sub (int, int);
+ };
+ 
+ #endif//CALCULATOR_H
+-- 
+2.39.0.windows.2
+
