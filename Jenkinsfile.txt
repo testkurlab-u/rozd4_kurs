@@ -1,0 +1,40 @@
+pipeline {
+  agent any
+
+  environment {
+    CONFIG = 'Debug'
+    PLATFORM = 'x64'
+    PROJ = 'test_repos.vcxproj'
+    EXE  = 'x64\\Debug\\test_repos.exe'
+    REPORT = 'x64\\Debug\\test_report.xml'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Build') {
+      steps {
+        bat "msbuild %PROJ% /m /p:Configuration=%CONFIG% /p:Platform=%PLATFORM%"
+      }
+    }
+
+    stage('Test') {
+      steps {
+        // запускаємо тести і генеруємо XML-звіт
+        bat "%EXE% --gtest_output=xml:%REPORT%"
+      }
+    }
+  }
+
+  post {
+    always {
+      // Парсинг звіту GoogleTest
+      xunit tools: [GoogleTest(pattern: "%REPORT%")]
+
+      // Архівуємо звіт як артефакт
+      archiveArtifacts artifacts: "%REPORT%", allowEmptyArchive: true
+    }
+  }
+}
